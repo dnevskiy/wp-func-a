@@ -20,6 +20,15 @@ Author URI: http://nevskiy.com.ua
   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
+/**
+ * Генерируем меню
+ */
+function admin_generate_menu()
+ {
+  // Добавляем основной раздел меню
+  add_menu_page('Добро пожаловать в модуль управления ускорения сайта', 'Уборщик', 'manage_options', 'edit-reviews', array(&$this, 'admin_edit_reviews'));
+}
+
 /*
 * Clean <head> Убирает ненужные ссылки из секции <head>
 */
@@ -109,8 +118,8 @@ header('Last-Modified: '.$mt_str);
 echo $text;
 header("Vary: Accept-Encoding");
 header("Accept-Encoding:gzip,deflate,sdch");
-// Create robots
 
+// Create robots
 add_filter('robots_txt', 'add_robotstxt');
 
 function add_robotstxt($text){
@@ -191,10 +200,10 @@ $text .= "Allow: /userfiles\n";
 $text .= "Allow: /*/*.js\n";
 $text .= "Allow: /*/*.css\n";
 "\n";
-$text .= "Sitemap: http://faberlic-line.com/sitemap.xml\n";
-$text .= "Sitemap: http://faberlic-line.com/sitemap.xml.gz\n";
+$text .= "Sitemap: http://domen.com/sitemap.xml\n";
+$text .= "Sitemap: http://domen.com/sitemap.xml.gz\n";
 "\n";
-$text .= "Host: faberlic-line.com\n";
+$text .= "Host: domen.com\n";
 "\n";
 $text .= "User-agent: Googlebot-Image\n";
 $text .= "Allow: /userfiles\n";
@@ -243,4 +252,11 @@ function true_remove_default_widget() {
 }
 add_action( 'widgets_init', 'true_remove_default_widget', 20 );
 
+// Заголовок виджета будет скрыт если прописать "!" или оставить поле пустым
+add_filter( 'widget_title', 'hide_widget_title' );
+function hide_widget_title( $title ) {
+    if ( empty( $title ) ) return '';
+    if ( $title[0] == '!' ) return '';
+    return $title;
+}
 ?>
