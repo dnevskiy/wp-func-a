@@ -142,10 +142,6 @@ $text .= "Disallow: */trackback\n";
 $text .= "Disallow: */*/trackback\n";
 $text .= "Disallow: /20\n";
 $text .= "Disallow: /page\n";
-
-$text .= "Disallow: project.faberlic-line.com/?Large-Flared-Penis-Head\n";
-$text .= "Disallow: project.faberlic-line.com/\n";
-
 $text .= "Allow: /userfiles\n";
 $text .= "Allow: /*/*.js\n";
 $text .= "Allow: /*/*.css\n";
@@ -167,10 +163,6 @@ $text .= "Disallow: */trackback\n";
 $text .= "Disallow: */*/trackback\n";
 $text .= "Disallow: /20\n";
 $text .= "Disallow: /page\n";
-
-$text .= "Disallow: project.faberlic-line.com/?Large-Flared-Penis-Head\n";
-$text .= "Disallow: project.faberlic-line.com/\n";
-
 $text .= "Allow: /userfiles\n";
 $text .= "Allow: /*/*.js\n";
 $text .= "Allow: /*/*.css\n";
@@ -192,10 +184,6 @@ $text .= "Disallow: */trackback\n";
 $text .= "Disallow: */*/trackback\n";
 $text .= "Disallow: /20\n";
 $text .= "Disallow: /page\n";
-
-$text .= "Disallow: project.faberlic-line.com/?Large-Flared-Penis-Head\n";
-$text .= "Disallow: project.faberlic-line.com/\n";
-
 $text .= "Allow: /userfiles\n";
 $text .= "Allow: /*/*.js\n";
 $text .= "Allow: /*/*.css\n";
@@ -258,5 +246,22 @@ function hide_widget_title( $title ) {
     if ( empty( $title ) ) return '';
     if ( $title[0] == '!' ) return '';
     return $title;
+}
+/* Убираем комментарий SEO Yoast в коде */
+add_action('get_header', 'rmyoast_ob_start');
+add_action('wp_head', 'rmyoast_ob_end_flush', 100);
+ 
+function rmyoast_ob_start() {
+    ob_start('remove_yoast');
+}
+function rmyoast_ob_end_flush() {
+    ob_end_flush();
+}
+function remove_yoast($output) {
+    if (defined('WPSEO_VERSION')) {
+        $output = str_ireplace('<!-- This site is optimized with the Yoast SEO plugin v' . WPSEO_VERSION . ' - https://yoast.com/wordpress/plugins/seo/ -->', '', $output);
+        $output = str_ireplace('<!-- / Yoast SEO plugin. -->', '', $output);
+    }
+    return $output;
 }
 ?>
